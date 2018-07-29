@@ -1,0 +1,67 @@
+// Material Icons
+
+// icon($input)
+// i.e. @include icon(message);
+// i.e. @include icon(zoom_out 72);
+// i.e. @include icon(flash_on 48);
+// i.e. @include icon(flash_on 48 after);
+
+@mixin icon($input: null) {
+  $beforeafter: before !default;
+  $icosize: null !default;
+  $icocolor: null !default;
+  $iconame: null !default;
+  $c1: 1 !default;
+  $status: active !default;
+
+  @each $item in $input {
+    // Determine icon size
+    @if type-of($item) == number {
+      $icosize: strip($item);
+      $icosize: units($icosize);
+     }
+    // Determine :before or :after
+    @else if $item == after { $beforeafter: after; }
+    // Determine active or inactive
+    @else if $item == inactive { $status: $item; }
+    // Determine icon color
+    @else if ( type-of($item) == color ) or ($item ==  dark) or ($item == light) {
+      $icocolor: $item;
+    }
+    // Determine icon name
+    @else { $iconame: $item; }
+  }
+
+  // Processing
+  &:#{$beforeafter} {
+    @extend .material-icons;
+    // size
+    @if type-of($icosize) == number { font-size: $icosize; }
+    // color
+    @if $icocolor != null {
+      @if $icocolor == dark {
+        @if $status == inactive {
+          color: $dark-icon-inactive;
+        }
+        @else { color: $dark-icon; }
+      }
+      @else if $icocolor == light {
+        @if $status == inactive {
+          color: $light-icon-inactive;
+        }
+        @else { color: $light-icon; }
+      }
+      @else {
+        @if $status == inactive {
+          color: transparentize($icocolor, .7);
+        }
+        @else { color: $icocolor; }
+      }
+    }
+    // icon code
+    @if $iconame != null {
+      $icocode: "\"\\#{$iconame}\"";
+      content: unquote($icocode);
+    }
+  }
+}

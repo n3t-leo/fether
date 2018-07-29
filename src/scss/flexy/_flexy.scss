@@ -1,0 +1,359 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//
+//
+/////////////////////////// P l a c e h o l d e r s ///////////////////////////
+
+
+
+@if default(type) {
+	// Create list of typography styles
+	$textMap:   lib-get(type);
+	$textNames: map-keys($textMap);
+	@each $style in $textNames {
+	  // Retrieve settings
+	  $getSize:     map-pull($textMap, $style 'size');
+	  $getLeading:  map-pull($textMap, $style 'leading');
+	  $getTracking: map-pull($textMap, $style 'tracking');
+	  $getWeight:   map-pull($textMap, $style 'weight');
+	  $getBase:     map-pull($textMap, $style 'base');
+	  // Create placeholders
+	  %text__#{$style} {
+	    @if $getSize != no     { font-size:      its($getSize); }
+	    @if $getLeading != no  { line-height:    its($getLeading); }
+	    @if $getTracking != no { letter-spacing: its($getTracking); }
+	    @if $getWeight != no   { font-weight:    weight($getWeight); }
+	    @if $getBase != no     { margin-bottom:  its($getBase); }
+	  }
+	}
+}
+
+//
+//
+//
+//
+////////////////////////////////  F u n M i x  ////////////////////////////////
+
+// cast()
+// elevate()
+// weight()
+
+// [C]olor [AS]sisan[T] - cast()
+// Returns COLOR value based on NAME, WEIGHT, and OPACITY.
+// i.e. cast(red)
+// i.e. cast('red')
+// i.e. cast(red 500)
+// i.e. cast('Red' 500)
+// i.e. cast(red 500 10%)
+// i.e. cast(byzantine inactive)
+// i.e. cast('byzantine' inactive)
+// i.e. cast('byzantine' divider 23%)
+// i.e. cast('carmine pink' 300 secondary)
+// i.e. cast(300 secondary carmine pink)
+// i.e. cast(dark)
+// i.e. cast(light)
+// i.e. cast(light 75%)
+// i.e. cast(dark 18%)
+// i.e. cast(dark disabled)
+// i.e. cast(Dark Divider)
+// i.e. cast(dark hint)
+// i.e. cast(dark inactive)
+// i.e. cast(dark secondary)
+
+// If MULTIPLE COLOR ENTRIES are detected, returns a mixed color.
+// MIXED COLOR value based on TWO colors and MIX PERCENTAGE.
+// i.e. cast(Carmine Pink 300 secondary, forest green 100 10%, 75%)
+// i.e. cast(red 300, yellow 800, 10%)
+// i.e. cast(red 200, #ffe318)
+// i.e. cast(red 200 with #ffe318 by 30%)
+// i.e. cast('red 200' with '#ffe318' by 30%)
+
+//@function cast($input...) {
+
+//}
+
+
+@function castnew($color, $array...) {
+	$mainMod:     null;
+	$mainColor:   null;
+	$mainWeight:  null;
+	$secondColor: null;
+	@if length($array) == 0 { $array: null; }
+	// validators
+	$opacityNames: map-keys( default(opacity style) );
+	$paletteNames: map-keys( palette(all) );
+	// if gradient
+	@if $array {
+		@return 'gradient area';
+	}
+	@else if check($color, 'and' 'to') {
+		@return 'multi-color entry';
+	}
+	@else {
+		@each $item in $color {
+			// make strings lowercase
+			@if is-string($item) { $item: to-lower-case($item); }
+			// set weight
+			@if is-int($item) {
+				@if $item < 0 { $item: 0; }
+				@else if $item > 1000 { $item: 1000; }
+				$mainWeight: $item;
+				@debug 'made it here set color weight: #{$mainWeight}';
+			}
+			// set opacity
+			@else if is-percent($item) or check($opacityNames, $item) {
+				$mainMod: $item;
+				@debug 'made it here set color mod: #{$mainMod}';
+			}
+			// set color name
+			@else {
+				$mainColor: $item;
+				@debug 'made it here set color name: #{$mainColor}';
+			}
+		}
+		// set color hue with fallback for web and hexadecimal colors
+		@if $mainColor and check($paletteNames, $mainColor) {
+			$mainColor: palette(all, $mainColor );
+		}
+		@else {
+			@each $item in $color {
+				@if is-color($item) and check($paletteNames for $item) == false {
+					$mainColor: $item;
+					@debug 'made it here: #{$mainColor}';
+				}
+			}
+			@if not $mainColor { @warn 'No valid colors found in cast() value: "#{$input}"'; }
+		}
+	}
+	@return $mainColor;
+}
+
+
+
+@function cast($input, $mixInput: null, $mixPercent: 50%) {
+	$color:           null;
+	$weight:          null;
+	$opacity:         null;
+	$inColor:         null;
+	$mixColor:        null;
+	$colorName:       null;
+	$lowerCount:      0;
+	$inputLower:      $input;
+	// validators
+	$opacitiesList:   map-keys( default(opacity style) );
+	$colorNamesList:  map-keys( palette(all) );
+	// set to lower case, just in... case?
+	@each $item in $inputLower {
+		$lowerCount: $lowerCount + 1;
+		@if is-string($item) { $item: to-lower-case($item); }
+		@if $lowerCount > 1 { $input: append($input, $item); }
+		@else { $input: $item; }
+	}
+	// if single color entry
+	@if ($mixInput == null) and (check($input, 'with') == false) {
+		@each $item in $input {
+			// set weight or opacity
+			@if is-int($item) {
+				@if $item < 0 { $item: 0; }
+				@else if $item > 1000 { $item: 1000; }
+				$weight: $item;
+			}
+			@else if is-percent($item) { $opacity: $item; }
+			@else {
+				@if check($opacitiesList, $item) { $opacity: $item; }
+				// set color name
+				@else {
+					$colorName: append($colorName, $item);
+					$colorName: '#{$colorName}';
+				}
+			}
+		}
+		// set color hue with fallback for web and hexadecimal colors
+		@if check($colorNamesList, $colorName) {
+			$color: map-get( palette(all), $colorName );
+		}
+		@else {
+			@each $item in $input {
+				@if is-color($item) and not has-item($colorNamesList, $item) { $color: $item; }
+			}
+			@if not $color { @warn 'No valid colors found in cast() value: "#{$input}"'; }
+		}
+		// calculate opacity for theme
+		@if not is-num($opacity) {
+			@if $opacity == null { $opacity: default; }
+			@if ($colorName == dark) or ($colorName == light) {
+				$opacity: map-pull(default(opacity), $colorName $opacity);
+			}
+			@else {
+				$opacity: map-pull(default(opacity), style $opacity);
+			}
+		}
+		// calculate color weight
+		@if $weight and $color {
+			@if $weight > 500 {
+				$weight: ($weight - 500) * .2%;
+				$color: mix(#000000, $color, $weight);
+			}
+			@else if $weight < 500 {
+				$weight: 100% - ($weight * .2%);
+				$color: mix(#FFFFFF, $color, $weight);
+			}
+		}
+		// add opacity to color
+		@if $color and $opacity and ($opacity != 0) {
+			$opacity: strip($opacity);
+			$opacity: 1 - ($opacity * .01);
+			$color: transparentize($color, $opacity);
+		}
+	}
+	// start if mix
+	@else if ($mixInput != null) {
+		$color:    cast($input);
+	  $mixColor: cast($mixInput);
+		@if not is-color($color)        { @warn 'Unknown color #1 for cast() mix: "#{$input}"'; }
+		@if not is-color($mixColor)     { @warn 'Unknown color #2 for cast() mix: "#{$mixInput}"'; }
+		@if not is-percent($mixPercent) { @warn 'Unknown percentage for cast() mix: "#{$mixPercent}"'; }
+		@if $color and $mixColor { $color: mix($color, $mixColor, $mixPercent); }
+	}
+	@else if check($input, 'with') == true {
+		$findWith: false;
+		$findBy:   false;
+		$i:        0;
+		// trim inputs out of input list
+		@each $item in $input {
+			@if is-string($item) { $item: to-lower-case($item); }
+			$i: $i + 1;
+			@if ($item != 'with') and ($findWith != true) {
+				@if $i > 1 { $color: append($color, $item); }
+				@else { $color: $item; }
+			}
+			@else if $item == 'with' { $findWith: true; $i: 0; }
+			@else if ($item != 'by') and ($findBy != true) and ($item != 'from') {
+				@if $i > 1 { $mixColor: append($mixColor, $item); }
+				@else { $mixColor: $item; }
+			}
+			@else if ($item == 'by') or ($item == 'from') { $findBy: true; }
+			@else if is-percent($item) or (is-pos($item)) { $mixPercent: $item; }
+		}
+		// final mix
+		$color:    cast($color);
+	  $mixColor: cast($mixColor);
+		@if not is-color($color)        { @warn 'Unknown color #1 for cast() mix: "#{$color}"'; }
+		@if not is-color($mixColor)     { @warn 'Unknown color #2 for cast() mix: "#{$mixColor}"'; }
+		@if not is-percent($mixPercent) { @warn 'Unknown percentage for cast() mix: "#{$mixPercent}"'; }
+		@if $color and $mixColor and $mixPercent {
+			@if not is-num($mixPercent) {
+				@if $mixPercent == 'top' { $mixPercent: bottom; }
+				@else if $mixPercent == 'right' { $mixPercent: left; }
+				@else if $mixPercent == 'bottom' { $mixPercent: top; }
+				@else if $mixPercent == 'left' { $mixPercent: right; }
+				@if $mixPercent == 'middle' { $color: radial-gradient($color, $mixColor); }
+				@else if $mixPercent == 'center' { $color: radial-gradient(circle, $color, $mixColor); }
+				@else { $color: linear-gradient(to $mixPercent, $color, $mixColor); }
+			}
+			@else { $color: mix($color, $mixColor, $mixPercent); }
+		}
+	}
+	@else {
+		@warn 'Something is wrong with your its() entry: "#{$input}".  This was a fallback warning, never meant to be read... WHAT DID YOU DO?';
+		@return null;
+	}
+	// output
+	@return $color;
+}
+@mixin cast($input, $mixInput: null, $mixPercent: null, $cssProperty: color) {
+  #{$cssProperty}: cast($input, $mixInput, $cssProperty);
+}
+
+
+// Add material box shadow DEPTH
+// i.e. elevate(4) -> <box-shadow>
+// i.e. @include elevate(4) -> box-shadow: <box-shadow>
+@function elevate($depth) {
+  $shadow:         none;
+  $layerPrimary:   null;
+  $layerSecondary: null;
+  $layerTertiary:  null;
+  // validate/strip
+  @if $depth != 'none' {
+    @if is-num($depth) {
+      @if not unitless($depth) { $depth: strip($depth); }
+      @if $depth <= 0 { $depth: 0; }
+      @else if $depth >= 100 { $depth: $depth * .01; }
+      @if $depth > 24 { $depth: 24; }
+    } @else { @warn 'Unknown elevation value: #{$depth}'; }
+    // shadow layer calculations - first layer
+    $slpTwo: $depth * 1;
+    $slpThree: $depth * 1.25;
+    $slpFour: $depth * .125;
+    $slp-opacity: (.12 + ($depth * .00125)) * 100%;
+    $slp-rgba: cast(black $slp-opacity);
+    // second layer
+    $slsTwo: $depth * .375;
+    $slsThree: $depth * .53;
+    $slsFour: -2 + ($depth * .4375);
+    // third layer
+    $sltTwo: $depth * .5;
+    $sltThree: 2 + ($depth * .5);
+    $sltFour: $depth * -.3125;
+    $slt-opacity: (.1 + ($depth * .00625)) * 100%;
+    $slt-rgba: cast(black $slt-opacity);
+    // build shadow layers
+    $layerPrimary:   0 its($slpTwo) its($slpThree) its($slpFour) $slp-rgba;
+    $layerSecondary: 0 its($slsTwo) its($slsThree) its($slsFour) cast(black 15%);
+    $layerTertiary:  0 its($sltTwo) its($sltThree) its($sltFour) $slt-rgba;
+  }
+  // build shadow
+  @if $depth != 0 { $shadow: $layerPrimary, $layerSecondary, $layerTertiary; }
+  // output shadow
+  @return $shadow;
+}
+@mixin elevate($depth) {
+  box-shadow: elevate($depth);
+}
+
+// Calculate font weight from WEIGHT NAME
+// i.e. weight(normal) -> 400
+// i.e. @include weight(heavy) -> font-weight: 400
+@function weight($weight: default(type body weight)) {
+	$weightList:     default(font weight);
+  $weightNameList: map-keys( $weightList );
+  @if check($weightNameList, $weight) {
+    $weight: map-get($weightList, $weight);
+    @return $weight;
+  }
+  @else if is-num($weight) { @return $weight; }
+  @else {
+		@warn 'Unknown weight() name or value: #{$weight}';
+		@return null;
+	}
+}
+@mixin weight($weight: default(type body weight)) {
+  font-weight: weight($weight);
+}
+
+//
+//
+//
+//
+////////////////////////////////  C o l o r s  ////////////////////////////////
+
+
+@import 'theme';

@@ -1,0 +1,51 @@
+$testMap: (
+  hello: goodbye,
+  whatsup: dontcry,
+  illbe: herewhen,
+  weall: die,
+);
+
+$testNest: (
+  hello: goodbye,
+  whatsup: dontcry,
+  illbe: herewhen,
+  weall: die,
+  innermap: (
+    innerhello: helloworld,
+    innergoodbye: whatsfry,
+  ),
+);
+
+$bool: true;
+$color: #fce170;
+$inull: null;
+$num: 14px;
+$string: "I am a string";
+$angle: 360deg;
+$integer: 14;
+$percent: 14%;
+$function: depth;
+$resolution: 14dpi;
+$time: 14ms;
+$abslength: 14cm;
+$rellength: 14ch;
+$relpercent: 14vh;
+$relview: 14vw;
+$pos: top;
+$joint: with;
+
+$testList: one hello 'two-three' 'four five' for six 7 8 9 $testNest;
+
+$variable: 'hello';
+
+@debug 'depth()' 'var' depth($variable) 'testlist' depth($testList) 'testmap' depth($testMap) 'fether nest' depth($fether--nest);
+@debug 'has-item()' has-item($testList, $variable);
+@debug 'has-joint()' has-joint($testList) joint-mapper($testList);
+@debug 'bool' is-bool($bool) 'col' is-color($color) 'list' is-list($testList) 'map' is-map($testMap) 'nest' is-nest($testNest) 'num' is-number($num) 'str' is-string($string) 'ang' is-angle($angle) 'int' is-integer($integer) 'pr' is-percent($percent) 'res' is-resolution($resolution) 't' is-time($time) 'al' is-abs-length($abslength) 'rl' is-rel-length($rellength) 'rp' is-rel-percent($relpercent) 'rv' is-rel-view($relview) 'pos' is-position($pos) 'jnt' is-joint($joint);
+@debug 'nest-get()' nest-get($testNest, innermap innerhello);
+@debug 'strip()' strip(14px);
+@debug 'power()' power(2, 4);
+@debug 'nest send' nest-send($testNest, innermap innerhello, hellouniverse);
+@debug 'nest gather' nest-gather($testNest, innermap);
+@debug 'nest has key' nest-has-key($testNest, innermap innerhello);
+@debug 'its' its(96px) its(16rem) its(25.4mm) its(1in) its(96px, rem) its(333) its(96px, in) its(25.4mm to px) its(1in) its(1in, rem);
