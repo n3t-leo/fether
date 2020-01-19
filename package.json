@@ -1,6 +1,6 @@
 {
   "name": "fether",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Powerful SCSS design environment focused on constructing elegant, lightweight stylesheets.",
   "main": "index.js",
   "scripts": {
