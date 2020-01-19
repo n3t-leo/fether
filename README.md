@@ -1,5 +1,17 @@
 # fether
 
+!!! IMPORTANT !!! Fether is currently undergoing a 2020 makeover. Stay tuned.
+
+---
+
+---
+
+---
+
+---
+
+---
+
 Fether is a powerful SCSS design environment focused on constructing
 elegant, lightweight stylesheets.
 
@@ -24,19 +36,19 @@ directory to the clipboard</b>.
 
 From your COMMAND LINE (CLI):</pre>
 
-### $ cd (paste project dir)
+### \$ cd (paste project dir)
 
 <pre>Install Fether:</pre>
 
-### $ npm install fether
+### \$ npm install fether
 
 <pre>Install Dependencies:</pre>
 
-### $ npm install
+### \$ npm install
 
 <pre>Run Fether:</pre>
 
-### $ grunt
+### \$ grunt
 
 </td>
 <td width="62%" valign="top">
@@ -55,15 +67,15 @@ From your COMMAND LINE (CLI):</pre>
 
 - [x] <b>NO PREFIXES NEEDED</b> on input because of <a href="https://github.com/postcss/autoprefixer">autoprefixer</a> goodness.
 
-- [x] <b>IMPRESSIVE MODERN STYLING</b> that follows many material design standards for typography and colors by default.  We also have implemented a lot of modern elements like flexbox, web font icons, animated buttons, and loading screen animations.
+- [x] <b>IMPRESSIVE MODERN STYLING</b> that follows many material design standards for typography and colors by default. We also have implemented a lot of modern elements like flexbox, web font icons, animated buttons, and loading screen animations.
 
-- [x] <b>LOW CSS FILE SIZES</b> due to a combination of <a href="http://sass-lang.com/documentation/file.SASS_REFERENCE.html#_extend__extend">@extend</a> and <a href="http://sass-lang.com/documentation/file.SASS_REFERENCE.html#_extend-Only_Selectors__placeholders">%placeholder</a>.  By loading extendors once in each detected media query, we get past the common issues of using @extend.
+- [x] <b>LOW CSS FILE SIZES</b> due to a combination of <a href="http://sass-lang.com/documentation/file.SASS_REFERENCE.html#_extend__extend">@extend</a> and <a href="http://sass-lang.com/documentation/file.SASS_REFERENCE.html#_extend-Only_Selectors__placeholders">%placeholder</a>. By loading extendors once in each detected media query, we get past the common issues of using @extend.
 
 - [x] <b>NEAT RESPONSIVE CSS</b> because during processing media queries will be organized and moved to the end of the css file for you!
 
-- [x] <b>SITE-WIDE UNIT HANDLER</b> that converts values to default or specified units globally.  Local conversions available.
+- [x] <b>SITE-WIDE UNIT HANDLER</b> that converts values to default or specified units globally. Local conversions available.
 
-- [x] <b>SITE-WIDE COLOR FILTERS</b> so when your boss says, "I love it, but can you just make everything a little more vibrant!?"  Instead of seriously considering your choice of profession, <i>now</i> you can simply adjust the filter setting.  You may also officially add 'Magician' to your list of job titles.
+- [x] <b>SITE-WIDE COLOR FILTERS</b> so when your boss says, "I love it, but can you just make everything a little more vibrant!?" Instead of seriously considering your choice of profession, <i>now</i> you can simply adjust the filter setting. You may also officially add 'Magician' to your list of job titles.
 
 # Why autoprefixer?
 
@@ -88,14 +100,16 @@ From your COMMAND LINE (CLI):</pre>
 
 - [ ] Fether's core functions may use comma separation in place of connectors ("for", "with", "of", "and", "to", etc.)
 
-- [ ] Anywhere you see quotes on a single word entry like  <code>"background"</code> or <code>"blue-grey"</code> you can leave out the quotes.
+- [ ] Anywhere you see quotes on a single word entry like <code>"background"</code> or <code>"blue-grey"</code> you can leave out the quotes.
 
-- [ ] Quotes <b><i>are</i> required</b> around strings and multi-word entries like <code>"I am a string"</code> or <code>"cerulean blue"</code>.  
+- [ ] Quotes <b><i>are</i> required</b> around strings and multi-word entries like <code>"I am a string"</code> or <code>"cerulean blue"</code>.
 
 <hr>
 
 ###### color assistant
+
 # cast( )
+
 <table style="float: right;">
 <tr><td>[x] Function</td></tr>
 <tr><td>[x] Mixin</td></tr>
@@ -108,9 +122,10 @@ From your COMMAND LINE (CLI):</pre>
 - If you include multiple colors, it will return a <b>gradient</b> or <b>mixture</b> depending on the input that is detected.
 - Color weights above 500 or below 500 mix with black or white respectively in order to achieve lightness and darkness settings similar to <a href="http://material.io">material design</a>.
 - The base filters for tinting and shading colors can be adjusted to provide site-wide color shifts.
-- Theme-based colors mimicking material design (light/dark) that are black and white transparencies.  This allows for text and other elements to change color depending on the background color or color behind the element i.e. instead of using a solid medium grey, you would use black at medium opacity.
+- Theme-based colors mimicking material design (light/dark) that are black and white transparencies. This allows for text and other elements to change color depending on the background color or color behind the element i.e. instead of using a solid medium grey, you would use black at medium opacity.
 
 <b>Examples:</b>
+
 <pre>
 /*function*/
 
@@ -148,12 +163,17 @@ cast 'lime green' 450 on background-color on border-top-color,
 
 );
 </pre>
+
 <a href="#index">Back to index</a>
+
 <hr>
 
 ###### check list for item/s
+
 # check( )
+
 Check if list contains one or more items.
+
 <p>
 <code>check( $listToCheck for $searchItems )</code><br>
 <code>check( $listToCheck, $searchItems )</code>
@@ -165,14 +185,19 @@ $someVariable: check( $thisList for $theseItems )
 </pre>
 
 ### item-check( )
+
 Check if list contains a single item, returns boolean.
+
 <p><code>item-check( $listToCheck, $someItem ) -> boolean</code></p>
 <a href="#index">Back to index</a>
 <hr>
 
 ###### depth calculator
+
 # depth( )
+
 Calculate nested value of an item.
+
 <p><code>depth( $someItem )</code></p>
 <b>Examples:</b>
 <pre>
@@ -182,7 +207,9 @@ Calculate nested value of an item.
 <hr>
 
 ###### create material box shadows
+
 # elevate( )
+
 <table>
 <tbody>
 <tr><td>[x] Function</td></tr>
@@ -201,8 +228,11 @@ $boxShadow: elevate(4);
 <hr>
 
 ###### is-type validation
-# is-*type* ( )
+
+# is-_type_ ( )
+
 Checks if an item is a certain type.
+
 <p><code>is-number( $someItem )</code></p>
 <b>Examples:</b>
 <pre>
@@ -233,8 +263,11 @@ Checks if an item is a certain type.
 <hr>
 
 ###### add or convert units
+
 # its( )
-Add defaults units to a unitless number.  If the input value has a unit, the number will be converted properly based on the incoming and outgoing units.  You may also add a custom unit-type for solo unit conversions.
+
+Add defaults units to a unitless number. If the input value has a unit, the number will be converted properly based on the incoming and outgoing units. You may also add a custom unit-type for solo unit conversions.
+
 <p>
 <code>its( $value )</code><br>
 <code>its( $value, $unitType )</code>
@@ -249,8 +282,11 @@ Add defaults units to a unitless number.  If the input value has a unit, the num
 <hr>
 
 ###### check map for item/s
+
 # map-check( )
+
 Returns a boolean value determined by whether or not all key/s were found in a map.
+
 <p><code>map-check( $map, $keys )</code></p>
 <b>Examples:</b>
 <pre>
@@ -260,8 +296,11 @@ Returns a boolean value determined by whether or not all key/s were found in a m
 <hr>
 
 ###### pull a specific value from a map
+
 # map-pull( )
+
 Returns the value from the specified key in a map (including nested).
+
 <p><code>map-pull( $map, $keys )</code></p>
 <b>Examples:</b>
 <pre>
@@ -271,8 +310,11 @@ Returns the value from the specified key in a map (including nested).
 <hr>
 
 ###### change a specific map value
+
 # map-push( )
+
 Returns a map with a specific value replaced based off specified key.
+
 <p><code>map-push( $map, $keys, $newValue )</code></p>
 <b>Examples:</b>
 <pre>
@@ -282,8 +324,11 @@ $updatedMap: map-push($oldMap, $key, $newValue);
 <hr>
 
 ###### nest get value
+
 # nest-get( )
+
 Returns the value of specified key inside nest.
+
 <p><code>nest-get( $keyOrKeys )</code></p>
 <b>Examples:</b>
 <pre>
@@ -294,8 +339,11 @@ $fetherRed: nest-get(palette red 'fether red');
 <hr>
 
 ###### nest pull all keys and values
+
 # nest-pull( )
+
 Returns a map of all keys and values (included nested) found inside of the specified key value.
+
 <p>
   <code>nest-pull( $keyOrKeys )</code><br>
   <code>nest-pull( $keyOrKeys, $customNest )</code>
@@ -308,8 +356,11 @@ $mapAllColors: nest-pull(palette);
 <hr>
 
 ###### calculate exponents (powers)
+
 # power( )
+
 Find the power of a number.
+
 <p><code>power( $int1, $int2 )</code></p>
 <b>Examples:</b>
 <pre>
@@ -319,8 +370,11 @@ Find the power of a number.
 <hr>
 
 ###### strip the units from a number
+
 # strip( )
+
 Description
+
 <p><code>xxxxx( $var )</code></p>
 <b>Examples:</b>
 <pre>
@@ -329,8 +383,11 @@ Description
 <hr>
 
 ###### XXXXXXXXXXXXXXXX
+
 # xxxxx( )
+
 Description
+
 <p><code>xxxxx( $var )</code></p>
 <b>Examples:</b>
 <pre>
@@ -339,8 +396,11 @@ Description
 <hr>
 
 ###### XXXXXXXXXXXXXXXX
+
 # xxxxx( )
+
 Description
+
 <p><code>xxxxx( $var )</code></p>
 <b>Examples:</b>
 <pre>
@@ -349,6 +409,7 @@ Description
 <hr>
 
 ###### Built-in Sass (Cheatsheet)
+
 <table>
 <thead>
 <tr>
@@ -503,9 +564,11 @@ unique-id()
 <hr>
 
 ### Brought to you by
+
 Fether has been lovingly crafted by myself, <a href="http://flexlab.io">Lucas Grey</a>, a Full Stack Designer with over 23 years of experience.
 
 **Fether Framework (Coming 2018)**: Includes CSS Styles, Javascript Library, Javascript Components
 
 ### License
+
 Apache 2.0
