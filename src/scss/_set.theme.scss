@@ -1,0 +1,13 @@
+// theme
+
+$setSwatch: (
+  swatch: (
+    0: #393839,
+    1: #1b75bc,
+    2: #b7b7b9,
+    3: #00b6f1,
+    4: #b0c836,
+    5: #f58220
+  )
+) !default;
+$fether: map-merge($fether, $setSwatch);

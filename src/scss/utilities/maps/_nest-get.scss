@@ -1,0 +1,8 @@
+// return the value of a specified key from within a nested map
+
+@function nest-get($nest, $keys) {
+  @each $key in $keys {
+    $nest: map-get($nest, $key);
+  }
+  @return $nest;
+}

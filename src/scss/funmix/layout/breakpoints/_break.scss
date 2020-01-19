@@ -1,0 +1,65 @@
+$bps: nest-get($fether, breakpoint);
+$bpSizes: map-keys($bps);
+
+@function break($input) {
+  $output: ();
+  $range: "min";
+  $dim: "width";
+  $break: null;
+  $orientation: null;
+  $view: null;
+  @each $item in $input {
+    @if $item == "max" {
+      $range: $item;
+    } @else if $item == "height" {
+      $dim: $item;
+    } @else if is-number($item) {
+      @if unitless($item) {
+        $break: its($item);
+      } @else {
+        $break: $item;
+      }
+    } @else if has-item($bpSizes, $item) {
+      $break: nest-get($bps, $item);
+    } @else if $item == "landscape" or $item == "portrait" {
+      $orientation: $item;
+    } @else if $item == "screen" or $item == "print" or $item == "speech" {
+      $view: $item;
+    } @else if $item == "all" {
+      $view: $item;
+    } @else if $item == "retina" {
+      @return "screen and (-webkit-min-device-pixel-ratio: 2)",
+        "screen and (min--moz-device-pixel-ratio: 2)",
+        "screen and (-o-min-device-pixel-ratio: 2/1)",
+        "screen and (min-device-pixel-ratio: 2)",
+        "screen and (min-resolution: 192dpi)",
+        "screen and (min-resolution: 2dppx)";
+    } @else {
+      @return $input;
+    }
+  }
+  @if $view {
+    @return $view;
+  } @else if $orientation {
+    @return "screen and (orientation: #{$orientation})";
+  } @else {
+    @if $range == "max" {
+      @if $dim == "height" {
+        @return "(max-height: #{$break})";
+      } @else {
+        @return "(max-width: #{$break})";
+      }
+    } @else {
+      @if $dim == "height" {
+        @return "(min-height: #{$break})";
+      } @else {
+        @return "(min-width: #{$break})";
+      }
+    }
+  }
+}
+@mixin break($input: null) {
+  @media #{break($input)} {
+    @content;
+  }
+}

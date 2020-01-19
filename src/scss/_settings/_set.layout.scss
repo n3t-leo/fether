@@ -1,0 +1,80 @@
+$setLayout: (
+  layout: (
+    unit: $default_units,
+    container: (
+      body: (
+        width: $body_width,
+        alignment: $body_align
+      ),
+      page: (
+        width: $page_width,
+        alignment: $page_align
+      ),
+      wrap: (
+        width: $wrap_width,
+        alignment: $wrap_align
+      )
+    ),
+    column: (
+      xs: $column_xs,
+      sm: $column_sm,
+      md: $column_md,
+      lg: $column_lg,
+      xl: $column_xl
+    )
+  )
+);
+$fether: map-merge($fether, $setLayout);
+// breakpoint
+$breakpointWidth: (
+  0: $break_0,
+  1: $break_1,
+  2: $break_2,
+  3: $break_3,
+  4: $break_4,
+  5: $break_5,
+  6: $break_6,
+  7: $break_7,
+  8: $break_8
+) !default;
+@function bp-get($input: null) {
+  $bp: map-get($breakpointWidth, $input);
+  @if $bp == null {
+    @return "No breakpoint found for '#{$input}'";
+  } @else {
+    @return its($bp);
+  }
+}
+$setDeviceBreakpoint: (
+  wear: bp-get(0),
+  mobile: bp-get(1),
+  mobile-landscape: bp-get(2),
+  mobile-lg: bp-get(3),
+  tablet: bp-get(3),
+  tablet-landscape: bp-get(4),
+  tablet-lg: bp-get(5),
+  desktop: bp-get(6),
+  desktop-lg: bp-get(7),
+  desktop-xl: bp-get(8),
+  tv: bp-get(8)
+);
+$setSizeBreakpoint: (
+  xs: bp-get(0),
+  xsmall: bp-get(0),
+  sm: bp-get(3),
+  small: bp-get(3),
+  md: bp-get(4),
+  medium: bp-get(4),
+  lg: bp-get(6),
+  large: bp-get(6),
+  xl: bp-get(8),
+  xlarge: bp-get(8)
+);
+$breakpointList: (
+  breakpoint:
+    map-merge(
+      $setDeviceBreakpoint,
+      map-merge($breakpointWidth, $setSizeBreakpoint)
+    )
+);
+$fether: map-merge($fether, $breakpointList);

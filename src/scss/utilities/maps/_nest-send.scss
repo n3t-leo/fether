@@ -1,0 +1,30 @@
+// replace the contents of a key within a nested map
+
+// note: if the key is not present it will be paired
+// with the new value and added to the nested map
+
+@function nest-send($nest, $keys, $newValue) {
+  $maps: ($nest);
+  $output: null;
+  @if length($keys) == 1 {
+    @return map-merge(
+      $nest,
+      (
+        $keys: $newValue
+      )
+    );
+  }
+  @for $i from 1 through (length($keys) - 1) {
+    $cKey: nth($keys, $i);
+    $cMap: nth($maps, -1);
+    $cGet: map-get($cMap, $cKey);
+    $maps: append($maps, $cGet);
+  }
+  @for $i from length($maps) through 1 {
+    $cMap: nth($maps, $i);
+    $cKey: nth($keys, $i);
+    $cVal: if($i == length($maps), $newValue, $output);
+    $output: map-merge($cMap, ());
+  }
+  @return $output;
+}

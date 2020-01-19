@@ -1,0 +1,56 @@
+// (96) => 96px if layout.unit set to 'px'
+// (96) => 16rem if layout.unit set to 'rem'
+// (96, em) => 16em
+// (96vw, rem) => 96rem because 'vw' can't convert to 'rem'
+
+// input handlers
+@function its($input, $outUnits: nest-get($fether, layout unit)) {
+  $inUnits: null;
+  $modifier: null;
+  $base: strip($rem_base);
+  $type: 1em, 1rem, 1ex, 1ch, 1%, 1vw, 1vh, 1vmin, 1vmax, 1px, 1cm, 1mm, 1in,
+    1pt, 1pc, 1dp;
+  $con: (
+    px: 96,
+    pt: 72,
+    pc: 6,
+    mm: 25.4,
+    cm: 2.54,
+    in: 1,
+    em: $base,
+    rem: $base
+  );
+  $canCon: map-keys($con);
+  @each $item in $type {
+    $unit: unit($item);
+    @if $unit == $outUnits {
+      $modifier: $item;
+    }
+  }
+  @if not $modifier {
+    @warn "The units '#{$outUnits}' are not recognized by the its() function, defaulted to 'px'.";
+    $modifier: 1px;
+  }
+  @if is-number($input) {
+    @if not unitless($input) {
+      $inUnits: unit($input);
+      $inUnits: unquote($inUnits);
+      $input: strip($input);
+    } @else {
+      $inUnits: px;
+    }
+    @if has-item($canCon, $inUnits) {
+      $calc: map-get($con, $inUnits);
+      $input: $input * (96 / $calc);
+    }
+    @if has-item($canCon, $outUnits) {
+      $calc: map-get($con, $outUnits);
+      $input: $input / (96 / $calc);
+    }
+    $input: $input * $modifier;
+  } @else {
+    @warn "No number value found for its() input: '#{$input}'.";
+    @return null;
+  }
+  @return $input;
+}

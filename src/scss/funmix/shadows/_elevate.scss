@@ -1,0 +1,44 @@
+@function elevate($input) {
+  $shadow: none;
+  $layerPrimary: null;
+  $layerSecondary: null;
+  $layerTertiary: null;
+  @if $input != "none" {
+    @if is-number($input) {
+      $input: strip($input);
+      @if $input <= 0 {
+        $input: 0;
+      }
+    } @else {
+      @warn 'Unknown elevation value: #{$input}';
+    }
+    $slpTwo: $input * 1;
+    $slpThree: $input * 1.25;
+    $slpFour: $input * 0.125;
+    $slp-opacity: (0.12 + ($input * 0.00125)) * 100%;
+    $slp-rgba: cast(black $slp-opacity);
+    $slsTwo: $input * 0.375;
+    $slsThree: $input * 0.53;
+    $slsFour: -2 + ($input * 0.4375);
+    $sltTwo: $input * 0.5;
+    $sltThree: 2 + ($input * 0.5);
+    $sltFour: $input * -0.3125;
+    $slt-opacity: (0.1 + ($input * 0.00625)) * 100%;
+    $slt-rgba: cast(black $slt-opacity);
+    $layerPrimary: 0 its($slpTwo) its($slpThree) its($slpFour) $slp-rgba;
+    $layerSecondary: 0
+      its($slsTwo)
+      its($slsThree)
+      its($slsFour)
+      cast(black 15%);
+    $layerTertiary: 0 its($sltTwo) its($sltThree) its($sltFour) $slt-rgba;
+  }
+  @if $input != 0 {
+    $shadow: $layerPrimary, $layerSecondary, $layerTertiary;
+  }
+  @return $shadow;
+}
+
+@mixin elevate($input) {
+  box-shadow: elevate($input);
+}

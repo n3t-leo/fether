@@ -1,0 +1,12 @@
+// check to see if a key is present within a nested map
+
+@function nest-has-key($nest, $items) {
+  @each $key in $items {
+    @if not map-has-key($nest, $key) {
+      @return false;
+    } @else {
+      $nest: map-get($nest, $key);
+    }
+  }
+  @return true;
+}

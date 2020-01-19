@@ -1,0 +1,23 @@
+// depth(map) => 3
+// depth(list) => 3
+
+// note: maps can contain lists and other maps
+// note: lists can contain maps and other lists
+
+@function depth($object) {
+  $count: 1;
+  @if is-map($object) {
+    @each $key, $value in $object {
+      @if is-map($value) {
+        $count: max(depth($value) + 1, $count);
+      }
+    }
+  } @else if is-list($object) {
+    @each $value in $object {
+      @if is-map($value) {
+        $count: max(depth($value) + 1, $count);
+      }
+    }
+  }
+  @return $count;
+}

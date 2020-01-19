@@ -1,0 +1,9 @@
+@use "../_settings/set.layout";
+
+// layout
+
+@import "layout/breakpoints/break";
+// break(width <min|max|xs|sm|md|lg|xl|wear|mobile|tablet|desktop|tv>)
+
+@import "layout/flexbox/flex";
+// flex(settings [position] (flex or flex-grow)) i.e. flex(row nowrap inline [left center center] 0) or flex(column [center top] (1 0 50%))

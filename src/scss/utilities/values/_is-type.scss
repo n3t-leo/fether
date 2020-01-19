@@ -1,0 +1,129 @@
+// is-bool ? true, false
+@function is-bool($input) {
+  @return type-of($input) == bool;
+}
+
+// is-color ? blue, #fff
+@function is-color($input) {
+  @return type-of($input) == color;
+}
+
+// is-dir ? up, down, left, right, out, in
+@function is-dir($input) {
+  @return index("up" "down" "left" "right" "out" "in", $input) != null;
+}
+
+// is-opacity ? 45%, disabled, divider, hint, inactive, secondary
+@function is-opacity($input) {
+  @return is-percent($input) or
+    index("disabled" "divider" "hint" "inactive" "secondary", $input) != null;
+}
+
+// is-list ? (a, b, c), (a b c)
+@function is-list($input) {
+  @return type-of($input) == list;
+}
+
+// is-map ? (a: 1, b: 2, c: 3)
+@function is-map($input) {
+  @return type-of($input) == map;
+}
+
+// is-nest ? ( a: ( b: 2, c: 3, d: 4), e: 5, f: 6)
+@function is-nest($input) {
+  @if is-map($input) {
+    @each $key, $value in $input {
+      @if is-map($value) {
+        @return true;
+      }
+    }
+  }
+  @return false;
+}
+
+// is-number ? 100px, 100, 100%, 100sec, 100asdf
+// is-num
+@function is-number($input) {
+  @return type-of($input) == number;
+}
+@function is-num($input) {
+  @return type-of($input) == number;
+}
+
+// is-string ? "I am a string"
+@function is-string($input) {
+  @return type-of($input) == string;
+}
+
+// is-angle ? 45deg
+@function is-angle($input) {
+  @return is-number($input) and index("deg" "grad" "rad" "turn", unit($input))
+    != null;
+}
+
+// is-integer ? 1, 56, 879
+// is-int
+@function is-integer($input) {
+  @return is-number($input) and round($input) == $input;
+}
+@function is-int($input) {
+  @return is-number($input) and round($input) == $input;
+}
+
+// is-percent ? 100%
+@function is-percent($input) {
+  @return is-number($input) and unit($input) == "%";
+}
+
+// is-resolution ? 100dpcm, 100dpi, 100dppx
+@function is-resolution($input) {
+  @return is-number($input) and index("dpcm" "dpi" "dppx", unit($input)) != null;
+}
+
+// is-time ? 100ms 100s 100min 100h 100d 100mo 100yr
+@function is-time($input) {
+  @return is-number($input) and
+    index("ms" "msec" "s" "sec" "min" "h" "d" "mo" "yr", unit($input)) != null;
+}
+
+// is-absolute-length ? 100cm, 100in, 100mm, 100pc, 100pt, 100px
+@function is-abs-length($input) {
+  @return is-number($input) and
+    index("cm" "in" "mm" "pc" "pt" "px", unit($input)) != null;
+}
+
+// is-relative-length ? 100ch, 100em, 100ex, 100rem
+@function is-relative-length($input) {
+  @return is-number($input) and index("ch" "em" "ex" "rem", unit($input)) !=
+    null;
+}
+
+// is-relative-view ? 100vh, 100vmax, 100vmin, 100vw
+@function is-relative-view($input) {
+  @return is-number($input) and index("vh" "vmax" "vmin" "vw", unit($input)) !=
+    null;
+}
+
+// is-relative ? is-relative-length, is-relative-view
+@function is-relative($input) {
+  @return is-relative-length($input) or is-relative-view($input);
+}
+
+// is-length ? is-absolute-length, is-relative-length
+@function is-length($input) {
+  @return is-relative-length($input) or is-abs-length($input);
+}
+
+// is-position ? top, right, bottom, left, center, middle
+@function is-position($input) {
+  @return index("top" "right" "bottom" "left" "center" "middle", $input) != null;
+}
+
+// is-size ? small, medium, large, xlarge, xs, sm, md, lg, xl
+@function is-size($input) {
+  @return index(
+      "xsmall" "small" "medium" "large" "xlarge" "xs" "sm" "md" "lg" "xl",
+      $input
+    )
+    != null;
+}

@@ -1,0 +1,5 @@
+@use "../../set.theme";
+
+@function swatch($input: 1) {
+  @return map-get(map-get($setSwatch, swatch), $input);
+}

@@ -1,0 +1,39 @@
+// returns a map of ALL key/value pairs (inc. nested) under a key
+
+@function nest-gather($nest, $keys: null) {
+  $nest: $nest;
+  $returnMap: null;
+  @if $keys {
+    $nest: nest-get($nest, $keys);
+  }
+  $depth: depth($nest);
+  $mapKeys: map-keys($nest);
+  @for $i from 1 through $depth {
+    @each $key, $value in $nest {
+      $index: index($mapKeys, $key);
+      @if not is-map($value) {
+        $value: (
+          $key: $value
+        );
+        @if $index == 1 {
+          $returnMap: $value;
+        } @else {
+          $returnMap: map-merge($returnMap, $value);
+        }
+      } @else if is-map($value) {
+        @if $index == 1 and $i == 1 {
+          $returnMap: $value;
+        } @else {
+          $returnMap: map-merge($returnMap, $value);
+        }
+        $returnMap: map-remove($returnMap, $key);
+      }
+    }
+    @if $i == 1 {
+      $nest: $returnMap;
+    } @else {
+      $nest: map-merge($nest, $returnMap);
+    }
+  }
+  @return $nest;
+}

@@ -1,0 +1,10 @@
+// (200px) => 200
+
+@function strip($number) {
+  @if is-number($number) {
+    $output: $number / ($number * 0 + 1);
+    @return $output;
+  } @else {
+    @warn 'Unknown strip() value: #{$number}';
+  }
+}

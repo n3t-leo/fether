@@ -1,0 +1,6 @@
+// values
+@import "depth"; // depth(object)
+@import "has-item"; // has-item(list, item)
+@import "has-items"; // has-item(list, items)
+@import "is-type"; // is-<type>(input) i.e. is-color(input)
+@import "remove-nth"; // remove-nth(list, int)

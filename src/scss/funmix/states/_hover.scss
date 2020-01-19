@@ -1,0 +1,21 @@
+@mixin hover($input: smart) {
+  @if $input == "only" {
+    @include break(desktop) {
+      &:hover {
+        @content;
+      }
+    }
+  } @else if $input == "smart" {
+    @include break(desktop) {
+      &:hover {
+        @content;
+      }
+    }
+    &:active {
+      transition: none;
+      @content;
+    }
+  } @else {
+    @warn "Invalid input for hover().  Valid inputs: only, active (default)";
+  }
+}

@@ -1,0 +1,27 @@
+// (2, 3) => 8
+
+@function power($number, $power: null) {
+  $runner: null;
+  @if (is-number($number)) and (is-number($power)) {
+    $number: strip($number);
+    $power: strip($power);
+    $output: 1 !default;
+    @if $power >= 0 {
+      @for $var from 1 through $power {
+        $output: $output * $number;
+      }
+    } @else {
+      @for $var from $power to 0 {
+        $output: $output / $number;
+      }
+    }
+    @return $output;
+  } @else {
+    @if not is-number($number) {
+      @warn 'Unknown power() number: #{$number}';
+    }
+    @if not is-number($power) {
+      @warn 'Unknown power() power: #{$power}';
+    }
+  }
+}
