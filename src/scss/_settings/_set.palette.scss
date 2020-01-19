@@ -1,3 +1,36 @@
+$theme_light: #fff !default;
+$theme_dark: #000 !default;
+
+$filter_color: null !default;
+// $filter_color will be mixed with every cast() color by the mix amount specified
+$filter_color_mix: 50% !default;
+// $filter_color_mix is only used if $filter_color is set
+
+$filter_tint_color: #fff !default;
+$filter_shade_color: #000 !default;
+// tint/shade filters are used for cast() color weights above/below 500
+
+$opacity_default: 100% !default;
+$opacity_disabled: 44% !default;
+$opacity_divider: 12% !default;
+$opacity_hint: 44% !default;
+$opacity_inactive: 28% !default;
+$opacity_secondary: 62% !default;
+
+$opacity_dark_default: 87% !default;
+$opacity_dark_disabled: 38% !default;
+$opacity_dark_divider: 12% !default;
+$opacity_dark_hint: 38% !default;
+$opacity_dark_inactive: 26% !default;
+$opacity_dark_secondary: 54% !default;
+
+$opacity_light_default: 100% !default;
+$opacity_light_disabled: 50% !default;
+$opacity_light_divider: 12% !default;
+$opacity_light_hint: 50% !default;
+$opacity_light_inactive: 30% !default;
+$opacity_light_secondary: 70% !default;
+
 // 'filter' settings adjust which color is mixed with darker colors above
 // 500 weight (shade) and lighter colors below 500 weight (tint) as well
 // as a setting for adjusting all exact 500 weight colors in general for

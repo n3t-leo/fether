@@ -1,5 +1,21 @@
 // theme
 
+// example font stack
+$stolzl: "Stolzl", sans-serif;
+
+$setFontStacks: (
+  font: (
+    stack: (
+      1: $stolzl,
+      code: $font-stack-code,
+      system: $font-stack-system,
+      material: $font-stack-material,
+      helvetica: $font-stack-helvetica
+    )
+  )
+);
+$fether: map-merge($fether, $setFonts);
+
 $setSwatch: (
   swatch: (
     0: #393839,

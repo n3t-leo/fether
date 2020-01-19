@@ -1,6 +1,7 @@
 @function stack($input: 1) {
   @return nest-get($setTypography, font stack $input);
 }
+
 @mixin stack($input: 1) {
   font-family: nest-get($setTypography, font stack $input);
 }
